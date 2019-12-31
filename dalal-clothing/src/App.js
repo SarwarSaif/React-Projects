@@ -6,18 +6,48 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component'
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
 import Header from './components/header/header.component'
+import { auth } from './firebase/firebase.utils'
 
-function App() {
-  return (
-    <div>
-      <Header/>
-      <Switch>
-        <Route exact path='/' component={HomePage}/>
-        <Route path='/shop' component={ShopPage}/>
-        <Route path='/signin' component={SignInAndSignUpPage}/>
-      </Switch>
-    </div>
-  );
+class App extends React.Component {
+
+  constructor () {
+    super();
+
+    this.state = {
+      currentUser: null
+    }
+  }
+
+  unsubscribeFromAuth = null; // To store auth information
+
+  componentDidMount() {
+    // This is open subscription. 
+    // This will always listen if a user get updated or logged out
+    // as long as the DOM is mounted
+    // But we need to close this Subscription to avoid any Memory leaks
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => { // It's always listening to if a user has signed out or logged in
+      this.setState({ currentUser: user });
+      console.log(user)
+    })
+  }
+
+  // Have to close the subscription when component will about to unmount
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
+  render () {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUser}/>
+        <Switch>
+          <Route exact path='/' component={HomePage}/>
+          <Route path='/shop' component={ShopPage}/>
+          <Route path='/signin' component={SignInAndSignUpPage}/>
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
