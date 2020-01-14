@@ -1,8 +1,10 @@
 # Redux
 
-## Redux == this.state
+## What is Redux?
 
-### It allows react state to be more scalable.
+### Redux == this.state
+
+It allows react state to be more scalable. It does state management which maybe confusing to understand at first but it makes the app easier to understand and how data flows.
 
 # Development tools
 
