@@ -2,9 +2,9 @@
 
 ## Redux == this.state
 
-### It allows react state to be more scalable
+### It allows react state to be more scalable.
 
-## Development tools
+# Development tools
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
