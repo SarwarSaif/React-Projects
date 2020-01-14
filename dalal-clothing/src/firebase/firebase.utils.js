@@ -13,6 +13,36 @@ const config = {
   measurementId: "G-2CPXK926F9"
 };
 
+// Take that user auth object that produced by authentication library
+// and store inside of our database
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  const userRef = firestore.doc(`users/${userAuth.uid}`); // Query Reference
+
+  const snap = await userRef.get(); // Query Snapshot
+  // We use Document reference objects to do CRUD operation
+  console.log(snap);
+  //console.log(userAuth);
+
+  if (!snap.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData
+      });
+    } catch (error) {
+      console.log("Error creating user", error.message);
+    }
+  }
+  return userRef;
+};
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
